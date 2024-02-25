@@ -9,7 +9,7 @@ import CannonDebugger from 'cannon-es-debugger';
 // My imports
 import { c } from './controls.js';
 import { PlayerObject } from './PlayerObject.js';
-import { PlayerCamera } from './camera.js';
+import { PlayerCamera } from './PlayerCamera.js';
 import { Environment } from './Environment.js';
 
 
