@@ -71,7 +71,6 @@ function animate() {
     player.controlPlayer(c, environment.floor);
 
     playerCam.updatePlayerCamera(player);
-    environment.floorMaterial.uniforms.time.value += 0.01;
 
 
     // Always at end of loop
