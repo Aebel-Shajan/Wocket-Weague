@@ -1,0 +1,35 @@
+{
+  "name": "wocket-weague",
+  "version": "1.0.0",
+  "description": "Wocket Weague but irl",
+  "main": "src/js/game.js",
+  "scripts": {
+    "build": "webpack --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aebel-Shajan/Wocket-Weague.git"
+  },
+  "keywords": [
+    "three",
+    "cannon-es",
+    "3d",
+    "game",
+    "car"
+  ],
+  "author": "Aebel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aebel-Shajan/Wocket-Weague/issues"
+  },
+  "homepage": "https://github.com/Aebel-Shajan/Wocket-Weague#readme",
+  "dependencies": {
+    "cannon-es": "^0.20.0",
+    "cannon-es-debugger": "^1.0.0",
+    "three": "^0.161.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
