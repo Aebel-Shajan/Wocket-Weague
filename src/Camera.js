@@ -30,7 +30,7 @@ export class PlayerCamera {
         let newForward = getXZ(player.getForward()).normalize();
         const velocity = getXZ(player.getVelocity());
         const position = player.getPosition();
-        if (Math.abs(velocity.length()) > 5) {
+        if (Math.abs(velocity.length()) > 10) {
             newForward = velocity.normalize();
         }
         newForward.multiplyScalar(-10).add(new Vector3().set(0, 1.5, 0));
