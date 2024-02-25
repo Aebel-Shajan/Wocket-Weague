@@ -36,31 +36,48 @@ export class PlayerObject extends GameObject {
         return this.#upward.set(0, 1, 0).applyQuaternion(this.body.quaternion);
     }
 
-    controlPlayer(c) {
+    controlPlayer(c, floor) {
         // angular velocity control
         const torque =
             this.getUpward()
                 .clone()
                 .multiplyScalar(1.5 * (c.KeyA - c.KeyD));
+
+        // linear velocity control
+        if (this.overlaps(floor)) {
+            const controlForce = this.getForward()
+                .clone()
+                .multiplyScalar(15 * (c.KeyW - c.KeyS));
+            this.body.applyForce(controlForce);
+            const dragForce = this.getVelocity()
+                .clone()
+                .multiplyScalar(-0.1);
+            this.body.applyForce(dragForce);// drag
+            const perpendicularVel = this.getVelocity().dot(this.getSideward());
+            const redirectAmount = c.ShiftLeft ? 0.6 : 4;
+            const centripetalForce = this.getSideward()
+                .clone()
+                .multiplyScalar(-1 * redirectAmount * perpendicularVel);
+            this.body.applyForce(centripetalForce);
+            this.body.applyForce(new THREE.Vector3().set(0, c.Space * 300, 0));
+        } else {
+            torque
+                .add(
+                    this.getSideward()
+                        .clone()
+                        .multiplyScalar(1.5 * (c.KeyW - c.KeyS))
+                )
+                .add(
+                    this.getForward()
+                    .clone()
+                    .multiplyScalar(2 * (c.KeyE - c.KeyQ))
+                );
+        }
         this.body.angularDamping = c.ShiftLeft ? 0.6 : 0.8;
         this.body.angularVelocity.lerp(torque, 0.1, this.body.angularVelocity);
 
-        // linear velocity control
-        const controlForce = this.getForward()
-            .clone()
-            .multiplyScalar(15 * (c.KeyW - c.KeyS));
-        this.body.applyForce(controlForce);
-        const dragForce = this.getVelocity()
-            .clone()
-            .multiplyScalar(-0.1);
-        this.body.applyForce(dragForce);// drag
-        const perpendicularVel = this.getVelocity().dot(this.getSideward());
-        const redirectAmount = c.ShiftLeft ? 0.6 : 4;
-        const centripetalForce = this.getSideward()
-            .clone()
-            .multiplyScalar(-1 * redirectAmount * perpendicularVel);
-        this.body.applyForce(centripetalForce);
-        this.body.applyForce(new THREE.Vector3().set(0, c.Space * 30, 0));
+
+      
     }
 
     updateDebug() {

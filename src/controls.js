@@ -3,6 +3,8 @@ const c = {
     KeyA: 0,
     KeyS: 0,
     KeyD: 0,
+    KeyQ: 0,
+    KeyE: 0,
     Space: 0,
     ShiftLeft: 0
 };
