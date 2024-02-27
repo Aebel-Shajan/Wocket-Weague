@@ -33,7 +33,7 @@ export class PlayerCamera {
         if (velocity.dot(player.getForward()) > 3 || velocity.length() > 10) {
             newForward = velocity.normalize();
         }
-        newForward.multiplyScalar(-10).add(new Vector3().set(0, 1.5, 0));
+        newForward.multiplyScalar(-10).add(new Vector3().set(0, 3, 0));
         this.forward.lerp(newForward, 0.17);
         this.forward.normalize().multiplyScalar(10);
         this.camera.position.copy(position.clone().add(this.forward));
