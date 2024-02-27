@@ -9,6 +9,7 @@ class GameObject {
     #position = new THREE.Vector3();
     #velocity = new THREE.Vector3();
     #quaternion = new THREE.Quaternion();
+    #physicsMaterial;
     
     constructor(mesh, bodyParams) {
         let boundingBox = new THREE.Box3().setFromObject(mesh);
@@ -18,9 +19,11 @@ class GameObject {
         this.#scale.set(1,1,1);
         this.mesh = new THREE.Object3D();
         this.mesh.add(mesh);
+        this.#physicsMaterial = bodyParams.material ? bodyParams.material :  new CANNON.Material()
         this.body = new CANNON.Body({
             shape: new CANNON.Box(this.#originalSize.clone().multiplyScalar(0.5)),
-            ...bodyParams
+            material: this.#physicsMaterial,
+            ...bodyParams,
         })
         mesh.position.copy(centrePos).multiplyScalar(-1); // centre mesh 
     }
@@ -95,6 +98,10 @@ class GameObject {
         this.body.updateBoundingRadius();
         this.body.updateAABB();
         this.updateMesh()
+    }
+    
+    getPhysicsMaterial() {
+        return this.#physicsMaterial;
     }
 
     updateMesh() {
