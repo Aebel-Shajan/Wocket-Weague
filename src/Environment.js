@@ -2,6 +2,7 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es"
 import { GameObject } from "./GameObject";
 
+
 export class Environment {
     floor;
     floorMaterial;
@@ -12,12 +13,21 @@ export class Environment {
         this.world = world;
         this.floor = this.createFloorObject();
         this.floor.addObjectTo(scene, world);
+        const wall1 = createWall({x:50, y: 0, z: 0}, 0);
+        const wall2 = createWall({x:-50, y: 0, z: 0}, 0);
+        const wall3 = createWall({x:0, y: 0, z: 50}, Math.PI/2);
+        const wall4 = createWall({x:0, y: 0, z: -50}, Math.PI/2);
+
+
+        wall1.addObjectTo(scene, world);
+        wall2.addObjectTo(scene, world);
+        wall3.addObjectTo(scene, world);
+        wall4.addObjectTo(scene, world);
+
         setupBackground(scene);
         setupLighting(scene);
     }
     createFloorObject() {
-
-     
         const vertexShader = `
         varying vec2 vUv;
         uniform float time;
@@ -118,4 +128,27 @@ function setupBackground(scene) {
         'pz.jpg', 'nz.jpg'
     ]);
     scene.background = texturefloor;
+}
+
+function createWall(position, yRotation) {
+    const wallGeometry = new THREE.BoxGeometry(1, 50, 100);
+    const wallMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.5,
+        roughness: 0.1,
+        metalness: 0.9
+    });
+    const wallMesh = new THREE.Mesh(wallGeometry, wallMaterial);
+    const wallObject = new GameObject(
+        wallMesh, 
+        {
+            type: CANNON.Body.STATIC, 
+            material: new CANNON.Material({friction: 0})
+        }
+    );
+    wallObject.setBottomPosition(position);
+    wallObject.setQuaternion(new THREE.Quaternion().setFromAxisAngle({x: 0, y: 1, z: 0}, yRotation));
+    wallObject.updateMesh();
+    return wallObject;
 }
