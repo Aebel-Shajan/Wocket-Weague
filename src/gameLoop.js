@@ -8,6 +8,7 @@ import * as CANNON from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger';
 // My imports
 import { c } from './controls.js';
+import { GameObject } from './GameObject.js';
 import { PlayerObject } from './PlayerObject.js';
 import { PlayerCamera } from './PlayerCamera.js';
 import { Environment } from './Environment.js';
@@ -57,15 +58,37 @@ const player = new PlayerObject(correctedMesh, playerPhysics);
 player.setPosition(new Vector3(0,10,0))
 player.addObjectTo(scene, world);
 
+// Ball
+const ballModel = await loader.loadAsync('assets/models/rocketLeagueBall.glb');
+const ballMesh = ballModel.scene;
+// a bit hacky, GameObject was only meant to handle box colliders
+ballMesh.scale.set(1.5, 1.5, 1.5);
+const ballPhysics = {
+    mass: 0.3,
+    shape: new CANNON.Sphere(1.5)
+   
+}
+const ballObject = new GameObject(ballMesh, ballPhysics);
+ballObject.setBottomPosition({x:10, z: 10, y: 1});
+ballObject.updateMesh();
+ballObject.addObjectTo(scene, world);
+
+const ballPlayerContactMat = new CANNON.ContactMaterial(
+    ballObject.getPhysicsMaterial(),
+    player.getPhysicsMaterial(),
+    {friction: 0.0, restitution: 0}
+)
+world.addContactMaterial(ballPlayerContactMat);
 
 // Animation loop
 function animate() {
     // Always at start of loop
-	cannonDebugger.update();
+	// cannonDebugger.update();
     stats.begin();
     let dt = Math.min(clock.getDelta(), 1 / 10);
     requestAnimationFrame(animate);
 
+    ballObject.updateMesh();
 
     player.updateMesh();
     player.controlPlayer(c, environment.floor);
