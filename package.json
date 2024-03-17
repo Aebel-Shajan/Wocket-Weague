@@ -24,11 +24,13 @@
   },
   "homepage": "https://github.com/Aebel-Shajan/Wocket-Weague#readme",
   "dependencies": {
-    "cannon-es": "^0.20.0",
-    "cannon-es-debugger": "^1.0.0",
+    "@dimforge/rapier3d-compat": "^0.12.0",
+    "@types/three": "^0.162.0",
     "three": "^0.161.0"
   },
   "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.2",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4"
   }
