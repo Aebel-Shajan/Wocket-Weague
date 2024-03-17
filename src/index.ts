@@ -43,12 +43,15 @@ async function game() {
         colliderDesc: RAPIER.ColliderDesc.ball(1)
             .setMass(0.1),
         rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic()
+            .setLinearDamping(1)
+            .setAngularDamping(0.3)
     }
     const sphereObject = new GameObject(scene, sphereMesh, sphereCollider);
     sphereObject.rapierRigidBody?.setTranslation({ x: 0, y: 2, z: 1 }, false);
 
     // Player
-    const player: Player = new Player(scene);
+    const playerMesh = await loadModel("./assets/models/raceFuture.glb");
+    const player: Player = new Player(scene, playerMesh as THREE.Mesh);
     player.rapierRigidBody?.setTranslation({x: 0, y: 3, z: 10}, false);
 
     // Input

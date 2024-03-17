@@ -3,27 +3,30 @@ import RAPIER, { Rotation } from "@dimforge/rapier3d-compat";
 
 import GameObject from '../GameObject';
 import { RigidBodyData, Vec3, carInput } from '../types';
-import { standardMaterial } from './ThreeJSHelpers';
+import { getObjectSize, loadModel, standardMaterial } from './ThreeJSHelpers';
 import KeyboardHandler from './KeyboardHandler';
 import Scene from '../Scene';
 
 
 class Player extends GameObject {
 
-    constructor(scene: Scene) {
-        const cubeMesh2 = new THREE.Mesh(
-            new THREE.BoxGeometry(1, 1, 1),
-            standardMaterial(0xffffff)
-        )
+    constructor(scene: Scene, mesh: THREE.Mesh) {
+        const correctedMesh = new THREE.Object3D();
+        correctedMesh.add(mesh);
+        mesh.scale.set(0.5, 0.5, 0.5);
+        mesh.rotateY(Math.PI);
+        const size = getObjectSize(mesh);
+        mesh.position.setY(-0.5 * size.y)
         const cubeCollider2: RigidBodyData = {
-            colliderDesc: RAPIER.ColliderDesc.cuboid(0.5, 0.5, 0.5)
+            colliderDesc: RAPIER.ColliderDesc.cuboid(0.5* size.x, 0.5* size.y, 0.5* size.z)
                 .setMass(1)
                 .setFriction(0)
                 .setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min),
             rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic()
         }
-        super(scene, cubeMesh2, cubeCollider2);
+        super(scene, correctedMesh as THREE.Mesh, cubeCollider2);
     }
+
 
     getRelativeVector(inputVec: Vec3) {
         const vec: THREE.Vector3 = new THREE.Vector3().copy(inputVec);
@@ -106,7 +109,7 @@ class Player extends GameObject {
         const rapierWorld: RAPIER.World = this.scene.rapierWorld;
         const currentPosition: THREE.Vector3 = this.getPosition();
 
-        const capsuleHalfHeight: number = 0.5001;//this.controllerOptions.capsule.halfHeight - this.controllerOptions.capsule.radius
+        const capsuleHalfHeight: number = 0.5* getObjectSize(this.threeJSGroup).y + 0.000001;//this.controllerOptions.capsule.halfHeight - this.controllerOptions.capsule.radius
 
         // Point just below the capsulate collider
         const rayOrigin: RAPIER.Vector3 = currentPosition.add(this.getUpward().multiplyScalar(-1 * capsuleHalfHeight));

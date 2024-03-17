@@ -19,3 +19,8 @@ export async function loadModel(modelPath: string, offset={x: 0, y: 0, z: 0}, of
     correctedMesh.scale.copy(offsetScale);
     return correctedMesh;
 }
+
+export function getObjectSize(object: THREE.Object3D) {
+    const boundingBox = new THREE.Box3().setFromObject(object);
+    return boundingBox.getSize(new THREE.Vector3());
+}
