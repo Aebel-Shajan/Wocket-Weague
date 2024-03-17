@@ -6,7 +6,7 @@ import Scene from './Scene';
 import Renderer from './Renderer';
 import { RigidBodyData } from './types';
 import GameObject from './GameObject';
-import { standardMaterial } from './util/ThreeJSHelpers';
+import { standardMaterial, loadModel } from './util/ThreeJSHelpers';
 import Player from './util/Player';
 import KeyboardHandler from './util/KeyboardHandler';
 
@@ -22,16 +22,17 @@ async function game() {
     let renderer = new Renderer();
 
     // Floor
-    const cubeMesh = new THREE.Mesh(
-        new THREE.BoxGeometry(100, 0.1, 100),
-        standardMaterial(0xffffff)
-    )
-    const p = cubeMesh.geometry.parameters;
+    const arenaPath = "./assets/models/lowpoly_football_field_and_a_supermarket.glb";
+    const mesh = await loadModel(
+        arenaPath, 
+        new THREE.Vector3(-8,-1.9,-23));
+    const cubeMesh = new THREE.Object3D();
+    cubeMesh.add(mesh);
     const cubeCollider: RigidBodyData = {
-        colliderDesc: RAPIER.ColliderDesc.cuboid(0.5 * p.width, 0.5 * p.height, 0.5 * p.depth),
+        colliderDesc: RAPIER.ColliderDesc.cuboid(100,0.1, 100),
         rigidBodyDesc: RAPIER.RigidBodyDesc.fixed()
     }
-    const cubeObject = new GameObject(scene, cubeMesh, cubeCollider);
+    const cubeObject = new GameObject(scene, cubeMesh as THREE.Mesh, cubeCollider);
 
     // Sphere
     const sphereMesh = new THREE.Mesh(
