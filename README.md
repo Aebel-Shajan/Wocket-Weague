@@ -4,7 +4,7 @@ I was trying to make a rocket league clone using three js and rapier. I was able
 
 Click the image below ⬇️ to test it out yourself.
 
-[![](https://raw.githubusercontent.com/Aebel-Shajan/Wocket-Weague/main/thumbnail.png)](https://wocket-weageu.vercel.app)
+[![](https://raw.githubusercontent.com/Aebel-Shajan/Wocket-Weague/main/thumbnail.png)](https://wocket-weague.vercel.app)
 
 ## Instructions
 * Use wasd to move the car around
