@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import RAPIER from "@dimforge/rapier3d-compat";
+import "./style.css";
 
 import Scene from './Scene';
 import Renderer from './Renderer';
@@ -9,7 +9,6 @@ import GameObject from './GameObject';
 import { standardMaterial, loadModel } from './util/ThreeJSHelpers';
 import Player from './util/Player';
 import KeyboardHandler from './util/KeyboardHandler';
-
 
 // js be like: YoU cAnT UsE ToP lEVel AWait UnLEsS YoU hAvE ES2050 🤓 
 game();
@@ -32,7 +31,7 @@ async function game() {
         colliderDesc: RAPIER.ColliderDesc.cuboid(100,0.1, 100),
         rigidBodyDesc: RAPIER.RigidBodyDesc.fixed()
     }
-    const cubeObject = new GameObject(scene, cubeMesh as THREE.Mesh, cubeCollider);
+    new GameObject(scene, cubeMesh as THREE.Mesh, cubeCollider);
 
     // Sphere
     const sphereMesh = new THREE.Mesh(
