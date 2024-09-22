@@ -24,6 +24,17 @@ This project utilizes the following technologies:
 
 ## Setup
 
+### Prerequisites
+
+Before running this project, make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/en/): A JavaScript runtime environment.
+- [Git](https://git-scm.com/): A distributed version control system.
+
+Once you have these prerequisites installed, you can proceed with the setup steps mentioned below.
+
+### Installation
+
 To use this project, locally follow these steps:
 
 | Steps | Command/Link |
