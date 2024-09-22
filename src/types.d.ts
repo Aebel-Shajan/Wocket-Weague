@@ -1,5 +1,6 @@
 import RAPIER from "@dimforge/rapier3d-compat";
 
+// This makes me cringe looking back
 
 interface RendererOptions {
     width?: number;

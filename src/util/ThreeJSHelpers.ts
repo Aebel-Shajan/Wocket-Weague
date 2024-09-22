@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { Vec3 } from '../types';
 
 export function standardMaterial(color: THREE.ColorRepresentation): THREE.MeshStandardMaterial {
     return new THREE.MeshStandardMaterial(

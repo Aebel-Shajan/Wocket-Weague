@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import RAPIER, { Rotation } from "@dimforge/rapier3d-compat";
+import RAPIER from "@dimforge/rapier3d-compat";
 
 import GameObject from '../GameObject';
 import { RigidBodyData, Vec3, carInput } from '../types';
-import { getObjectSize, loadModel, standardMaterial } from './ThreeJSHelpers';
+import { getObjectSize } from './ThreeJSHelpers';
 import KeyboardHandler from './KeyboardHandler';
 import Scene from '../Scene';
 
@@ -103,7 +103,7 @@ class Player extends GameObject {
     }
 
 
-    rayCastToGround(): RAPIER.RayColliderToi {
+    rayCastToGround(): RAPIER.RayColliderHit {
         if (!this.scene) { throw new Error("Game object is not in scene"); }
         if (!this.rapierRigidBody) { throw new Error("Game object does not have rapierRigidBody") }
         const rapierWorld: RAPIER.World = this.scene.rapierWorld;
@@ -116,15 +116,15 @@ class Player extends GameObject {
 
         const rayDirection: RAPIER.Vector3 = this.getUpward().multiplyScalar(-1); // downwards
         const ray = new RAPIER.Ray(rayOrigin, rayDirection);
-        const toi: RAPIER.RayColliderToi | null = rapierWorld.castRay(ray, 1, true);
+        const toi: RAPIER.RayColliderHit | null = rapierWorld.castRay(ray, 1, true);
         if (!toi) { throw new Error("Could not calculate toi") };
         return toi;
     }
 
     isOnGround(threshold: number = 0.1): boolean {
         try {
-            const groundHit: RAPIER.RayColliderToi = this.rayCastToGround();
-            return groundHit ? groundHit.toi < threshold : false;
+            const groundHit: RAPIER.RayColliderHit = this.rayCastToGround();
+            return groundHit ? groundHit.timeOfImpact < threshold : false;
         } catch (error) {
             return false;
         }

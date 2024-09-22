@@ -1,37 +1,20 @@
 {
   "name": "wocket-weague",
-  "version": "1.0.0",
-  "description": "Wocket Weague but irl",
-  "main": "src/js/game.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build": "webpack --mode=development"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Aebel-Shajan/Wocket-Weague.git"
-  },
-  "keywords": [
-    "three",
-    "cannon-es",
-    "3d",
-    "game",
-    "car"
-  ],
-  "author": "Aebel",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Aebel-Shajan/Wocket-Weague/issues"
-  },
-  "homepage": "https://github.com/Aebel-Shajan/Wocket-Weague#readme",
-  "dependencies": {
-    "@dimforge/rapier3d-compat": "^0.12.0",
-    "@types/three": "^0.162.0",
-    "three": "^0.161.0"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.4.2",
-    "webpack": "^5.90.1",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.14.0",
+    "@types/three": "^0.168.0",
+    "three": "^0.168.0"
   }
 }
