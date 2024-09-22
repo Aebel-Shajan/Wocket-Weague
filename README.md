@@ -1,43 +1,51 @@
 # WOCKET WEAGUE
 
-I was trying to make a rocket league clone using three js and rapier. I was able to get a car that could rotate in all 3 dimensions and a ball that you could roll around. 
+An attempt at a rocket league clone in the browser. Made using Three.js, Rapier and Typescript. Contributions are welcome!
 
 Click the image below ⬇️ to test it out yourself.
 
 [![](https://raw.githubusercontent.com/Aebel-Shajan/Wocket-Weague/main/thumbnail.png)](https://wocket-weague.vercel.app)
 
+Deployed with Vercel: https://wocket-weague.vercel.app
+
 ## Instructions
 * Use wasd to move the car around
 * q and e to make the car roll
 
+## Tech Stack
+
+This project utilizes the following technologies:
+
+- [TypeScript](https://www.typescriptlang.org/): A statically typed superset of JavaScript that compiles to plain JavaScript.
+- [Vite](https://vitejs.dev/): A fast build tool for modern web applications.
+- [Three.js](https://threejs.org/): A JavaScript library for creating 3D graphics in the browser.
+- [Rapier](https://rapier.rs/): A 2D and 3D physics engine for games and simulations.
 
 
 ## Setup
 
 To use this project, locally follow these steps:
 
-1. Clone the repository:
+| Steps | Command/Link |
+| --- | --- |
+| Clone the repository | ```git clone https://github.com/Aebel-Shajan/Wocket-Weague.git``` |
+| Navigate to the project directory | `cd Wocket-Weague` |
+| Install the dependencies | `npm install` |
+| Start the development server | `npm run dev` |
+| Open your browser and visit [http://localhost:3000](http://localhost:3000) to see the project in action | http://localhost:3000 |
 
-```bash
-git clone https://github.com/Aebel-Shajan/Wocket-Weague.git
-```
 
-2. Navigate to the project directory:
+## Contributors
 
-```bash
-cd Wocket-Weague
-```
+[![][aebel-card]][aebel-gh] | [![][octocat-card]][octocat-gh] | [![][octocat-card]][octocat-gh] | [![][octocat-card]][octocat-gh]
+-|-|-|-
 
-3. Install the dependencies:
 
-```bash
-npm install
-```
+<!-- Links -->
+[aebel-gh]: https://github.com/aebel-shajan
+[octocat-gh]: https://github.com/octocat
 
-4. Start the development server:
+<!-- Assets -->
+[aebel-card]: ./docs/assets/gitmon-aebel-shajan.png
+[octocat-card]: ./docs/assets/gitmon-octocat.png
 
-```bash
-npm run dev
-```
-
-5. Open your browser and visit [http://localhost:3000](http://localhost:3000) to see the project in action.
