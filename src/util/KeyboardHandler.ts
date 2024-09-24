@@ -1,3 +1,6 @@
+/**
+ * Represents a keyboard handler that tracks pressed keys and shift state.
+ */
 class KeyboardHandler {
 	pressedKeys: { [key: string]: boolean } = {};
 	shiftIsDown = false;
@@ -16,14 +19,23 @@ class KeyboardHandler {
 		}
 	}
 
+	/**
+	 * Checks if a specific key is currently being pressed.
+	 * @param key - The key to check.
+	 * @see[Key reference](https://www.toptal.com/developers/key)
+	 * @returns `true` if the key is currently being pressed, `false` otherwise.
+	 */
 	isKeyDown(key: string): boolean {
 		return this.pressedKeys[key] || false;
 	}
 
+	/**
+	 * Checks if the shift key is currently being pressed.
+	 * @returns `true` if the shift key is currently being pressed, `false` otherwise.
+	 */
 	isShiftDown(): boolean {
 		return this.shiftIsDown;
 	}
 }
 
 export default KeyboardHandler;
-// https://www.toptal.com/developers/key

@@ -1,14 +1,22 @@
-// https://github.com/WesUnwin/three-game-engine/blob/main/src/Renderer.ts
+//
 import * as THREE from "three";
 
 import type Scene from "./Scene";
 import type Player from "./util/Player";
 
+/**
+ * The Renderer class handles rendering the scene using Three.js.
+ * @see [three-game-engine](https://github.com/WesUnwin/three-game-engine/blob/main/src/Renderer.ts): I copied alot of code from here.
+ */
 class Renderer {
 	threeJSRenderer: THREE.WebGLRenderer;
 	threeJSCamera: THREE.Camera;
 	cameraForward: THREE.Vector3;
 
+	/**
+	 * Initialise the Three js renderer, add it to the document body.
+	 * Setup the camera aswell
+	 */
 	constructor() {
 		this.threeJSRenderer = new THREE.WebGLRenderer({ antialias: true });
 		this.threeJSRenderer.shadowMap.enabled = true;
@@ -41,6 +49,9 @@ class Renderer {
 		this.cameraForward = new THREE.Vector3(-1, -1, -1);
 	}
 
+	/**
+	 * Set the size of the renderer dom element. Allow it to change dimensions on window resizing.
+	 */
 	setupFullScreenCanvas() {
 		const canvas = this.threeJSRenderer.domElement;
 		canvas.style.width = `${window.innerWidth}px`;
@@ -60,15 +71,31 @@ class Renderer {
 		this.setSize(window.innerWidth, window.innerHeight);
 	}
 
+	/**
+	 * Renders a given scene and camera.
+	 *
+	 * @param scene Scene object to be rendered
+	 */
 	render(scene: Scene) {
 		this.threeJSRenderer.render(scene.threeJSScene, this.threeJSCamera);
 	}
 
+	/**
+	 * Set the size of the Three js renderer and update the camera to adjust for this.
+	 *
+	 * @param width New width of the three js renderer
+	 * @param height New heigh of the three js rendere
+	 */
 	setSize(width: number, height: number) {
 		this.threeJSRenderer.setSize(width, height);
 		this.threeJSCamera.updateMatrix();
 	}
 
+	/**
+	 * Make the camera foloow the player using their translation data.
+	 *
+	 * @param player Player object to be followed.
+	 */
 	followPlayer(player: Player) {
 		const newForward = player.getForward();
 		newForward.y = 0;

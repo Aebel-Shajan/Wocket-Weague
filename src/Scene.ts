@@ -1,15 +1,22 @@
 import RAPIER from "@dimforge/rapier3d-compat";
-// https://github.com/WesUnwin/three-game-engine/blob/main/src/Scene.ts#L12
 import * as THREE from "three";
 
 import type GameObject from "./GameObject";
 
+/**
+ * Represents a scene in the game.
+ * A scene contains game objects and handles rendering and physics simulation.
+ * @see [three-game-engine](https://github.com/WesUnwin/three-game-engine/blob/main/src/Scene.ts#L12) : I copied a lot of code from here.
+ */
 class Scene {
 	threeJSScene: THREE.Scene;
 	rapierWorld: RAPIER.World;
 	gameObjects: GameObject[];
 	physicsRenderingLines: THREE.LineSegments;
 
+	/**
+	 * Creates a new instance of the Scene class.
+	 */
 	constructor() {
 		this.threeJSScene = new THREE.Scene();
 		this.threeJSScene.background = new THREE.Color("lightblue");
@@ -28,6 +35,10 @@ class Scene {
 		this.physicsRenderingLines.name = "PhysicsRenderingLines";
 	}
 
+	/**
+	 * Sets up the lighting in the scene.
+	 * Adds directional lights and ambient light.
+	 */
 	setupLighting() {
 		// Create directional light
 		const light1 = new THREE.DirectionalLight(0xffffff, 4);
@@ -41,6 +52,10 @@ class Scene {
 		this.threeJSScene.add(new THREE.AmbientLight(0xffffff, 0));
 	}
 
+	/**
+	 * Sets up the skybox in the scene.
+	 * Loads the skybox textures and sets them as the background.
+	 */
 	setupSkyBox() {
 		const loader = new THREE.CubeTextureLoader();
 		loader.setPath("assets/textures/skybox/");
@@ -55,6 +70,10 @@ class Scene {
 		this.threeJSScene.background = texturefloor;
 	}
 
+	/**
+	 * Advances the physics simulation in the scene.
+	 * Updates the positions and forces of game objects.
+	 */
 	advancePhysics() {
 		this.rapierWorld.step();
 		this.gameObjects.forEach((gameObject) => {
@@ -64,6 +83,11 @@ class Scene {
 		});
 	}
 
+	/**
+	 * Adds a game object to the scene.
+	 * Creates a rigid body and collider for the game object.
+	 * @param gameObject - The game object to add.
+	 */
 	addGameObject(gameObject: GameObject) {
 		if (!this.gameObjects.some((g) => g === gameObject)) {
 			gameObject.scene = this;
@@ -79,6 +103,10 @@ class Scene {
 		}
 	}
 
+	/**
+	 * Removes a game object from the scene.
+	 * @param gameObject - The game object to remove.
+	 */
 	removeGameObject(gameObject: GameObject) {
 		if (this.gameObjects.some((g) => g === gameObject)) {
 			// gameObject is indeed a child of this scene
@@ -88,6 +116,9 @@ class Scene {
 		}
 	}
 
+	/**
+	 * Adds the physics rendering lines to the scene if they are not already present.
+	 */
 	showPhysics() {
 		const physicsRenderingLines = this.threeJSScene.getObjectByName(
 			"PhysicsRenderingLines",
@@ -97,6 +128,9 @@ class Scene {
 		}
 	}
 
+	/**
+	 * Removes the physics rendering lines from the scene if they are present.
+	 */
 	hidePhysics() {
 		const physicsRenderingLines = this.threeJSScene.getObjectByName(
 			"PhysicsRenderingLines",
@@ -106,6 +140,9 @@ class Scene {
 		}
 	}
 
+	/**
+	 * Updates the position and color attributes of the rendering lines based on the physics simulation.
+	 */
 	updatePhysicsGraphics() {
 		const physicsRenderingLines = this.threeJSScene.getObjectByName(
 			"PhysicsRenderingLines",

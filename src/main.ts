@@ -10,7 +10,14 @@ import KeyboardHandler from "./util/KeyboardHandler";
 import Player from "./util/Player";
 import { loadModel, standardMaterial } from "./util/ThreeJSHelpers";
 
-// js be like: YoU cAnT UsE ToP lEVel AWait UnLEsS YoU hAvE ES2050 🤓
+/**
+ * Entry point to set up the game.
+ *
+ * @remarks
+ * I have wrapped everything in an async function because you have to wait till RAPIER
+ * initialises before doing anything else.
+ *
+ */
 game();
 async function game() {
 	await RAPIER.init();
@@ -54,7 +61,9 @@ async function game() {
 	// Input
 	const input = new KeyboardHandler();
 
-	// Game Loop
+	/**
+	 * The main game render loop which runs once per frame.
+	 */
 	function gameLoop(): void {
 		requestAnimationFrame(gameLoop);
 		scene.advancePhysics();
