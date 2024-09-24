@@ -7,14 +7,18 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"lint": "tsc --noEmit -p tsconfig.json && biome lint --diagnostic-level=error --no-errors-on-unmatched ./**/*.{js,ts}",
-		"lint:fix": "biome check --apply-unsafe ./**/*.{js,ts}",
-		"lint:staged": "biome check --error-on-warnings --no-errors-on-unmatched --staged ./**/*.{js,ts}",
+		"lint": "tsc --noEmit -p tsconfig.json && biome lint --diagnostic-level=error --no-errors-on-unmatched src/",
+		"lint:fix": "biome check --write --unsafe src/",
+		"lint:staged": "lint-staged",
 		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*": "biome check --write --error-on-warnings --no-errors-on-unmatched src/"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",
 		"husky": "9.1.6",
+		"lint-staged": "^15.2.10",
 		"typescript": "^5.5.3",
 		"vite": "^5.4.1"
 	},
