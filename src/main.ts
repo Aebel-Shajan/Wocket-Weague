@@ -62,7 +62,7 @@ async function game() {
 	const input = new KeyboardHandler();
 
 	/**
-	 * The main game render loop
+	 * The main game render loop which runs once per frame.
 	 */
 	function gameLoop(): void {
 		requestAnimationFrame(gameLoop);
