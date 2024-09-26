@@ -108,7 +108,6 @@ class Player extends GameObject {
 			1.5 * input.yaw,
 		);
 
-		console.log(this.isOnGround());
 		if (!this.isOnGround()) {
 			torque.add(this.getForward().multiplyScalar(1.5 * input.roll));
 		}
