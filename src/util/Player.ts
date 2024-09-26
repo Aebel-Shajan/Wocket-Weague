@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import GameObject from "../GameObject";
 import type Scene from "../Scene";
-import type { RigidBodyData, Vec3, carInput } from "../types";
+import type { RigidBodyData, carInput } from "../types";
 import type KeyboardHandler from "./KeyboardHandler";
 import { getObjectSize } from "./ThreeJSHelpers";
 
@@ -44,59 +44,6 @@ class Player extends GameObject {
 
 		// Create the corresponding GameObject for the player
 		super(scene, correctedMesh as THREE.Mesh, cubeCollider);
-	}
-
-	/**
-	 * Gets the relative vector based on the player's rotation.
-	 * @param inputVec The input vector.
-	 * @returns The relative vector.
-	 */
-	getRelativeVector(inputVec: Vec3) {
-		const vec: THREE.Vector3 = new THREE.Vector3().copy(inputVec);
-		vec.applyQuaternion(this.rapierRigidBody.rotation() as THREE.Quaternion);
-		return vec;
-	}
-
-	/**
-	 * Gets the sideward vector based on the player's rotation.
-	 * @returns The sideward vector.
-	 */
-	getSideward() {
-		return this.getRelativeVector({ x: 1, y: 0, z: 0 });
-	}
-
-	/**
-	 * Gets the upward vector based on the player's rotation.
-	 * @returns The upward vector.
-	 */
-	getUpward() {
-		return this.getRelativeVector({ x: 0, y: 1, z: 0 });
-	}
-
-	/**
-	 * Gets the forward vector based on the player's rotation.
-	 * @returns The forward vector.
-	 */
-	getForward() {
-		return this.getRelativeVector({ x: 0, y: 0, z: 1 });
-	}
-
-	/**
-	 * Gets the position of the player.
-	 * @returns The position vector.
-	 * @throws Error if the game object does not have a rapierRigidBody.
-	 */
-	getPosition() {
-		return new THREE.Vector3().copy(this.rapierRigidBody.translation());
-	}
-
-	/**
-	 * Gets the velocity of the player.
-	 * @returns The velocity vector.
-	 * @throws Error if the game object does not have a rapierRigidBody.
-	 */
-	getVelocity() {
-		return new THREE.Vector3().copy(this.rapierRigidBody.linvel());
 	}
 
 	/**
