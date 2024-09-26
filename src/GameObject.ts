@@ -40,10 +40,8 @@ class GameObject {
 	 * collision body.
 	 */
 	syncWithRigidBody() {
-		if (this.rapierRigidBody) {
-			this.threeJSGroup.position.copy(this.rapierRigidBody.translation());
-			this.threeJSGroup.quaternion.copy(this.rapierRigidBody.rotation());
-		}
+		this.threeJSGroup.position.copy(this.rapierRigidBody.translation());
+		this.threeJSGroup.quaternion.copy(this.rapierRigidBody.rotation());
 	}
 
 	/**

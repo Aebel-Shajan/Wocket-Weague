@@ -44,7 +44,7 @@ class Player extends GameObject {
 	 */
 	getRelativeVector(inputVec: Vec3) {
 		const vec: THREE.Vector3 = new THREE.Vector3().copy(inputVec);
-		vec.applyQuaternion(this.rapierRigidBody?.rotation() as THREE.Quaternion);
+		vec.applyQuaternion(this.rapierRigidBody.rotation() as THREE.Quaternion);
 		return vec;
 	}
 
@@ -78,9 +78,6 @@ class Player extends GameObject {
 	 * @throws Error if the game object does not have a rapierRigidBody.
 	 */
 	getPosition() {
-		if (!this.rapierRigidBody) {
-			throw new Error("Game object does not have rapierRigidBody");
-		}
 		return new THREE.Vector3().copy(this.rapierRigidBody.translation());
 	}
 
@@ -90,9 +87,6 @@ class Player extends GameObject {
 	 * @throws Error if the game object does not have a rapierRigidBody.
 	 */
 	getVelocity() {
-		if (!this.rapierRigidBody) {
-			throw new Error("Game object does not have rapierRigidBody");
-		}
 		return new THREE.Vector3().copy(this.rapierRigidBody.linvel());
 	}
 
@@ -102,9 +96,6 @@ class Player extends GameObject {
 	 * @throws Error if the game object does not have a rapierRigidBody.
 	 */
 	control(k: KeyboardHandler) {
-		if (!this.rapierRigidBody) {
-			throw new Error("Game object does not have rapierRigidBody");
-		}
 		const input: carInput = {
 			yaw: Number(k.isKeyDown("a")) - Number(k.isKeyDown("d")),
 			roll: Number(k.isKeyDown("q")) - Number(k.isKeyDown("e")),
@@ -149,12 +140,6 @@ class Player extends GameObject {
 	 * @throws Error if the game object is not in a scene or does not have a rapierRigidBody.
 	 */
 	rayCastToGround(): RAPIER.RayColliderHit {
-		if (!this.scene) {
-			throw new Error("Game object is not in scene");
-		}
-		if (!this.rapierRigidBody) {
-			throw new Error("Game object does not have rapierRigidBody");
-		}
 		const rapierWorld: RAPIER.World = this.scene.rapierWorld;
 		const currentPosition: THREE.Vector3 = this.getPosition();
 

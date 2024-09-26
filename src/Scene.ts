@@ -78,8 +78,8 @@ class Scene {
 		this.rapierWorld.step();
 		this.gameObjects.forEach((gameObject) => {
 			gameObject.syncWithRigidBody();
-			gameObject.rapierRigidBody?.resetForces(false);
-			gameObject.rapierRigidBody?.resetTorques(false);
+			gameObject.rapierRigidBody.resetForces(false);
+			gameObject.rapierRigidBody.resetTorques(false);
 		});
 	}
 
