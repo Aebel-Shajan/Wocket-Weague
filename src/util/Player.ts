@@ -36,7 +36,10 @@ class Player extends GameObject {
 				0.5 * size.x,
 				0.5 * size.y,
 				0.5 * size.z,
-			).setMass(1),
+			)
+				.setMass(1)
+				.setFriction(0)
+				.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Max),
 			rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic(),
 		};
 
