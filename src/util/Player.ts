@@ -14,8 +14,8 @@ class Player extends GameObject {
 	/**
 	 * Creates a new instance of the Player class.
 	 *
-	 * The mesh's origin is first corrected. Then a cube collider is created based on
-	 * the size information of the mesh.
+	 * The mesh's origin is first corrected. Then its rotated to point forward.
+	 * Then a cube collider is created based on the size information of the mesh.
 	 *
 	 * @param scene The scene the player belongs to.
 	 * @param mesh The mesh representing the player.
@@ -25,25 +25,23 @@ class Player extends GameObject {
 		const correctedMesh = new THREE.Object3D();
 		correctedMesh.add(mesh);
 		mesh.scale.set(0.5, 0.5, 0.5);
+		// Point the mesh in the right direction
 		mesh.rotateY(Math.PI);
 		const size = getObjectSize(mesh);
 		mesh.position.setY(-0.5 * size.y);
 
 		// Create the collision body for the player using size information from the mesh.
-		const cubeCollider: RigidBodyData = {
+		const colliderData: RigidBodyData = {
 			colliderDesc: RAPIER.ColliderDesc.cuboid(
 				0.5 * size.x,
 				0.5 * size.y,
 				0.5 * size.z,
-			)
-				.setMass(1)
-				.setFriction(0)
-				.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min),
+			).setMass(1),
 			rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic(),
 		};
 
 		// Create the corresponding GameObject for the player
-		super(scene, correctedMesh as THREE.Mesh, cubeCollider);
+		super(scene, correctedMesh as THREE.Mesh, colliderData);
 	}
 
 	/**
