@@ -11,10 +11,12 @@ import type { RigidBodyData } from "./types";
  * copied hella code from there.
  */
 class GameObject {
-	scene: Scene | null;
+	scene: Scene;
 	threeJSGroup: THREE.Mesh;
 	rigidBodyData: RigidBodyData;
-	rapierRigidBody: RAPIER.RigidBody | null;
+	// Used definite assignment operator here because logic is hidden away in
+	// addGameObjectToScene.
+	rapierRigidBody!: RAPIER.RigidBody;
 
 	/**
 	 * Creates a new GameObject instance.
@@ -30,8 +32,7 @@ class GameObject {
 		this.scene = scene;
 		this.threeJSGroup = threeJSGroup;
 		this.rigidBodyData = rigidBodyData;
-		this.rapierRigidBody = null;
-		this.scene.addGameObject(this); // why do this??
+		addGameObjectToScene(this, scene);
 	}
 
 	/**
@@ -39,10 +40,8 @@ class GameObject {
 	 * collision body.
 	 */
 	syncWithRigidBody() {
-		if (this.rapierRigidBody) {
-			this.threeJSGroup.position.copy(this.rapierRigidBody.translation());
-			this.threeJSGroup.quaternion.copy(this.rapierRigidBody.rotation());
-		}
+		this.threeJSGroup.position.copy(this.rapierRigidBody.translation());
+		this.threeJSGroup.quaternion.copy(this.rapierRigidBody.rotation());
 	}
 
 	/**
@@ -52,6 +51,28 @@ class GameObject {
 	getScene() {
 		return this.scene;
 	}
+}
+
+/**
+ * Adds a given game object to a given scene.
+ * Setup the gameObject.rapierRigidBody property.
+ * @param gameObject - The game object to add.
+ * @param scene - The scene to add the object to
+ */
+function addGameObjectToScene(gameObject: GameObject, scene: Scene): void {
+	if (scene.gameObjects.some((g) => g === gameObject)) {
+		throw new Error("GameObject already exists in the scene.");
+	}
+	scene.gameObjects.push(gameObject);
+	scene.threeJSScene.add(gameObject.threeJSGroup);
+	const rapierRigidBody = scene.rapierWorld.createRigidBody(
+		gameObject.rigidBodyData.rigidBodyDesc,
+	);
+	scene.rapierWorld.createCollider(
+		gameObject.rigidBodyData.colliderDesc,
+		rapierRigidBody,
+	);
+	gameObject.rapierRigidBody = rapierRigidBody;
 }
 
 export default GameObject;
