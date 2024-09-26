@@ -13,17 +13,24 @@ import { getObjectSize } from "./ThreeJSHelpers";
 class Player extends GameObject {
 	/**
 	 * Creates a new instance of the Player class.
+	 *
+	 * The mesh's origin is first corrected. Then a cube collider is created based on
+	 * the size information of the mesh.
+	 *
 	 * @param scene The scene the player belongs to.
 	 * @param mesh The mesh representing the player.
 	 */
 	constructor(scene: Scene, mesh: THREE.Mesh) {
+		// Correct the mesh such that its origin is at the centre of the object.
 		const correctedMesh = new THREE.Object3D();
 		correctedMesh.add(mesh);
 		mesh.scale.set(0.5, 0.5, 0.5);
 		mesh.rotateY(Math.PI);
 		const size = getObjectSize(mesh);
 		mesh.position.setY(-0.5 * size.y);
-		const cubeCollider2: RigidBodyData = {
+
+		// Create the collision body for the player using size information from the mesh.
+		const cubeCollider: RigidBodyData = {
 			colliderDesc: RAPIER.ColliderDesc.cuboid(
 				0.5 * size.x,
 				0.5 * size.y,
@@ -34,7 +41,9 @@ class Player extends GameObject {
 				.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min),
 			rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic(),
 		};
-		super(scene, correctedMesh as THREE.Mesh, cubeCollider2);
+
+		// Create the corresponding GameObject for the player
+		super(scene, correctedMesh as THREE.Mesh, cubeCollider);
 	}
 
 	/**
