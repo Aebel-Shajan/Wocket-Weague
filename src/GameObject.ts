@@ -1,8 +1,8 @@
 import type RAPIER from "@dimforge/rapier3d-compat";
-import type * as THREE from "three";
+import * as THREE from "three";
 
 import type Scene from "./Scene";
-import type { RigidBodyData } from "./types";
+import type { RigidBodyData, Vec3 } from "./types";
 
 /**
  * Represents a game object in the scene.
@@ -36,6 +36,57 @@ class GameObject {
 	}
 
 	/**
+	 * Gets the relative vector based on the game object's rotation.
+	 * @param inputVec The input vector.
+	 * @returns The relative vector.
+	 */
+	getRelativeVector(inputVec: Vec3) {
+		const vec: THREE.Vector3 = new THREE.Vector3().copy(inputVec);
+		vec.applyQuaternion(this.rapierRigidBody.rotation() as THREE.Quaternion);
+		return vec;
+	}
+
+	/**
+	 * Gets the sideward vector based on the game object's rotation.
+	 * @returns The sideward vector.
+	 */
+	getSideward() {
+		return this.getRelativeVector({ x: 1, y: 0, z: 0 });
+	}
+
+	/**
+	 * Gets the upward vector based on the game object's rotation.
+	 * @returns The upward vector.
+	 */
+	getUpward() {
+		return this.getRelativeVector({ x: 0, y: 1, z: 0 });
+	}
+
+	/**
+	 * Gets the forward vector based on the game object's rotation.
+	 * @returns The forward vector.
+	 */
+	getForward() {
+		return this.getRelativeVector({ x: 0, y: 0, z: 1 });
+	}
+
+	/**
+	 * Gets the position of the game object from its rigid body..
+	 * @returns The position vector.
+	 */
+	getPosition() {
+		return new THREE.Vector3().copy(this.rapierRigidBody.translation());
+	}
+
+	/**
+	 * Gets the velocity of the game object from its rigid body.
+	 * @returns The velocity vector.
+	 */
+	getVelocity() {
+		return new THREE.Vector3().copy(this.rapierRigidBody.linvel());
+	}
+
+	/**
 	 * Synchronizes the objects three js mesh position and rotation with the rapier
 	 * collision body.
 	 */
@@ -58,6 +109,8 @@ class GameObject {
  * Setup the gameObject.rapierRigidBody property.
  * @param gameObject - The game object to add.
  * @param scene - The scene to add the object to
+ *
+ * @throws Error if GameObject already exists within the scene.
  */
 function addGameObjectToScene(gameObject: GameObject, scene: Scene): void {
 	if (scene.gameObjects.some((g) => g === gameObject)) {
