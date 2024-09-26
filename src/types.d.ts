@@ -44,5 +44,6 @@ interface carInput extends movementInput {
 	forward: number;
 	yaw: number;
 	roll: number;
-	upward: number;
+	isJumping: boolean;
+	isDrifiting: boolean;
 }

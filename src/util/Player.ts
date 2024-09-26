@@ -101,6 +101,14 @@ class Player extends GameObject {
 
 	/**
 	 * Controls the player's movement based on keyboard input.
+	 *
+	 * The player should be able to move
+	 *  * forward and backwards using w and s.
+	 *  * turn right and left using a and d.
+	 *  * roll clockwise and anticlockwise using q and e.
+	 *  * jump with space bar
+	 *  * drift with shift
+	 *
 	 * @param k The keyboard handler.
 	 * @throws Error if the game object does not have a rapierRigidBody.
 	 */
@@ -109,37 +117,70 @@ class Player extends GameObject {
 			yaw: Number(k.isKeyDown("a")) - Number(k.isKeyDown("d")),
 			roll: Number(k.isKeyDown("q")) - Number(k.isKeyDown("e")),
 			forward: Number(k.isKeyDown("w")) - Number(k.isKeyDown("s")),
-			upward: Number(k.isKeyDown(" ")),
+			isJumping: k.isKeyDown(" "),
+			isDrifiting: k.isShiftDown(),
 		};
 
-		// angular velocity control
-		const torque: THREE.Vector3 = this.getUpward().multiplyScalar(
-			1.5 * input.yaw,
-		);
+		this.controlYawRoll(input.yaw, input.roll);
 
-		if (!this.isOnGround()) {
-			torque.add(this.getForward().multiplyScalar(1.5 * input.roll));
-		}
-
-		this.rapierRigidBody.setAngvel(torque, true);
-
-		// linear velocity control
 		if (this.isOnGround()) {
-			const controlForce: THREE.Vector3 = this.getForward().multiplyScalar(
-				15 * input.forward,
-			);
-			this.rapierRigidBody.addForce(controlForce, true);
-			const dragForce = this.getVelocity().multiplyScalar(-0.9);
-			this.rapierRigidBody.addForce(dragForce, true); // drag
-			const perpendicularVel = this.getVelocity().dot(this.getSideward());
-			const redirectAmount = k.isShiftDown() ? 0.6 : 4;
-			const centripetalForce = this.getSideward()
-				.clone()
-				.multiplyScalar(-1 * redirectAmount * perpendicularVel);
-			this.rapierRigidBody.addForce(centripetalForce, true);
-			const upwardForce = new THREE.Vector3().set(0, 100 * input.upward, 0);
-			this.rapierRigidBody.addForce(upwardForce, true);
+			this.controlForwardVel(input.forward);
+			this.controlDrift(input.isDrifiting);
+			this.controlJump(input.isJumping);
 		}
+	}
+
+	/**
+	 * Control the yaw and roll of the car based on player input.
+	 *
+	 * @param yawAmount Amount to rotate left or right.
+	 * @param rollAmount Amount to roll the car along forward axis.
+	 */
+	controlYawRoll(yawAmount: number, rollAmount: number) {
+		const torque: THREE.Vector3 = this.getUpward().multiplyScalar(
+			1.5 * yawAmount,
+		);
+		if (!this.isOnGround()) {
+			torque.add(this.getForward().multiplyScalar(1.5 * rollAmount));
+		}
+		this.rapierRigidBody.setAngvel(torque, true);
+	}
+
+	/**
+	 * Control how fast the car goes forward or backward. Apply some drag aswell.
+	 *
+	 * @param forwardAmount Amount to move forward or backwards
+	 */
+	controlForwardVel(forwardAmount: number) {
+		const controlForce: THREE.Vector3 = this.getForward().multiplyScalar(
+			15 * forwardAmount,
+		);
+		this.rapierRigidBody.addForce(controlForce, true);
+		const dragForce = this.getVelocity().multiplyScalar(-0.9);
+		this.rapierRigidBody.addForce(dragForce, true); // drag
+	}
+
+	/**
+	 * Apply drifting physics to car based on input.
+	 *
+	 * @param isDrifting Boolean which indicates if the car wants to drift
+	 */
+	controlDrift(isDrifting: boolean) {
+		const perpendicularVel = this.getVelocity().dot(this.getSideward());
+		const redirectAmount = isDrifting ? 0.6 : 4;
+		const centripetalForce = this.getSideward()
+			.clone()
+			.multiplyScalar(-1 * redirectAmount * perpendicularVel);
+		this.rapierRigidBody.addForce(centripetalForce, true);
+	}
+
+	/**
+	 *
+	 * @param isJumping Boolean which indicates if car wants to jump
+	 */
+	controlJump(isJumping: boolean) {
+		const upwardForce = new THREE.Vector3().set(0, 100 * Number(isJumping), 0);
+		this.rapierRigidBody.addForce(upwardForce, true);
 	}
 
 	/**
