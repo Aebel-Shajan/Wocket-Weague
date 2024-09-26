@@ -84,39 +84,6 @@ class Scene {
 	}
 
 	/**
-	 * Adds a game object to the scene.
-	 * Creates a rigid body and collider for the game object.
-	 * @param gameObject - The game object to add.
-	 */
-	addGameObject(gameObject: GameObject) {
-		if (!this.gameObjects.some((g) => g === gameObject)) {
-			gameObject.scene = this;
-			this.gameObjects.push(gameObject);
-			this.threeJSScene.add(gameObject.threeJSGroup);
-			gameObject.rapierRigidBody = this.rapierWorld.createRigidBody(
-				gameObject.rigidBodyData.rigidBodyDesc,
-			);
-			this.rapierWorld.createCollider(
-				gameObject.rigidBodyData.colliderDesc,
-				gameObject.rapierRigidBody,
-			);
-		}
-	}
-
-	/**
-	 * Removes a game object from the scene.
-	 * @param gameObject - The game object to remove.
-	 */
-	removeGameObject(gameObject: GameObject) {
-		if (this.gameObjects.some((g) => g === gameObject)) {
-			// gameObject is indeed a child of this scene
-			this.gameObjects = this.gameObjects.filter((g) => g !== gameObject);
-			gameObject.scene = null;
-			this.threeJSScene.remove(gameObject.threeJSGroup);
-		}
-	}
-
-	/**
 	 * Adds the physics rendering lines to the scene if they are not already present.
 	 */
 	showPhysics() {
