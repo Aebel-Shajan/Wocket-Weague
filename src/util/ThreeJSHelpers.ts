@@ -2,22 +2,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
- * More concise way of creating a new MeshStandardMaterial.
- *
- * I have no idea why I made this??
- *
- * @param color Threejs color
- * @returns Mesh standard material from Three
- */
-export function standardMaterial(
-	color: THREE.ColorRepresentation,
-): THREE.MeshStandardMaterial {
-	return new THREE.MeshStandardMaterial({
-		color: color,
-	});
-}
-
-/**
  * Load a ThreeJs mesh, correcting its origin and initial size.
  *
  * @param modelPath Relative path to model file from the public folder.

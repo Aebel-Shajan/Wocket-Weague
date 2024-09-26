@@ -8,7 +8,7 @@ import Scene from "./Scene";
 import type { RigidBodyData } from "./types";
 import KeyboardHandler from "./util/KeyboardHandler";
 import Player from "./util/Player";
-import { loadModel, standardMaterial } from "./util/ThreeJSHelpers";
+import { loadModel } from "./util/ThreeJSHelpers";
 
 /**
  * Entry point to set up the game.
@@ -31,6 +31,11 @@ async function game() {
 	const arenaPath =
 		"./assets/models/lowpoly_football_field_and_a_supermarket.glb";
 	const mesh = await loadModel(arenaPath, new THREE.Vector3(-8, -1.9, -23));
+	// Lags :(
+	// const arenaScale = 0.05;ss
+	// const arenaPath =
+	// 	"./assets/models/RLMap.glb";
+	// const mesh = await loadModel(arenaPath, {x: 0, y: 0, z: 0}, {x: arenaScale, y: arenaScale, z: arenaScale} );
 	const cubeMesh = new THREE.Object3D();
 	cubeMesh.add(mesh);
 	const cubeCollider: RigidBodyData = {
@@ -40,10 +45,12 @@ async function game() {
 	new GameObject(scene, cubeMesh as THREE.Mesh, cubeCollider);
 
 	// Sphere
-	const sphereMesh = new THREE.Mesh(
-		new THREE.SphereGeometry(1),
-		standardMaterial(0xff0000),
-	);
+	const ballScale = 0.01;
+	const sphereMesh = (await loadModel(
+		"./assets/models/ball.glb",
+		{ x: 0, y: 0, z: 0 },
+		{ x: ballScale, y: ballScale, z: ballScale },
+	)) as THREE.Mesh;
 	const sphereCollider: RigidBodyData = {
 		colliderDesc: RAPIER.ColliderDesc.ball(1).setMass(0.1),
 		rigidBodyDesc: RAPIER.RigidBodyDesc.dynamic()
