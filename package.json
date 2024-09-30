@@ -9,7 +9,8 @@
 		"preview": "vite preview",
 		"lint": "biome check ./src",
 		"lint:fix": "biome check --write ./src",
-		"prepare": "husky"
+		"prepare": "husky",
+		"docs": "typedoc"
 	},
 	"lint-staged": {
 		"*": "biome check --write --error-on-warnings --no-errors-on-unmatched ./src"
@@ -18,6 +19,9 @@
 		"@biomejs/biome": "1.9.2",
 		"husky": "9.1.6",
 		"lint-staged": "^15.2.10",
+		"typedoc": "^0.26.7",
+		"typedoc-plugin-markdown": "^4.2.8",
+		"typedoc-plugin-rename-defaults": "^0.7.1",
 		"typescript": "^5.5.3",
 		"vite": "^5.4.1"
 	},
